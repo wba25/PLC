@@ -1,20 +1,25 @@
-package LearnJava2D.Animation;
+package GUI;
+
+import Controler.Field;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Demo extends JFrame {
-    public Demo(){
+public class Game extends JFrame {
+
+    public Game() {
+
         initUI();
     }
 
     private void initUI() {
-        add(new BoardThreadAnimation());
+
+        add(new Field());
 
         setResizable(false);
         pack();
 
-        setTitle("Star");
+        setTitle("Shoot me bitch");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -24,7 +29,7 @@ public class Demo extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame ex = new Demo();
+                Game ex = new Game();
                 ex.setVisible(true);
             }
         });
