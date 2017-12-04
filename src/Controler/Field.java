@@ -16,33 +16,22 @@ import java.util.ArrayList;
 public class Field extends JPanel implements ActionListener {
 
     private Timer timer;
-    private Cowboy cowboy;
-    private ArrayList<Demon> demons;
+    public static Cowboy cowboy;
+    public static ArrayList<Demon> demons;
+    private ArrayList<Wave> waves;
     private boolean ingame;
-    private final int ICRAFT_X = 40;
-    private final int ICRAFT_Y = 60;
+    private final int ICRAFT_X = 180;
+    private final int ICRAFT_Y = 120;
     private final int B_WIDTH = 400;
     private final int B_HEIGHT = 300;
     private final int DELAY = 15;
 
-    private final int[][] pos = {
-            {2380, 29}, {2500, 59}, {1380, 89},
-            {780, 109}, {580, 139}, {680, 239},
-            {790, 259}, {760, 50}, {790, 150},
-            {980, 209}, {560, 45}, {510, 70},
-            {930, 159}, {590, 80}, {530, 60},
-            {940, 59}, {990, 30}, {920, 200},
-            {900, 259}, {660, 50}, {540, 90},
-            {810, 220}, {860, 20}, {740, 180},
-            {820, 128}, {490, 170}, {700, 30}
-    };
-
     public Field() {
 
-        initBoard();
+        initField();
     }
 
-    private void initBoard() {
+    private void initField() {
 
         addKeyListener(new TAdapter());
         setFocusable(true);
@@ -53,18 +42,42 @@ public class Field extends JPanel implements ActionListener {
 
         cowboy = new Cowboy(ICRAFT_X, ICRAFT_Y);
 
-        initAliens();
+        initEnemies();
 
         timer = new Timer(DELAY, this);
         timer.start();
     }
 
-    public void initAliens() {
-        demons = new ArrayList<>();
+    /*
+    *
+    * TODO:
+    *
+    * Threads para gerar ondas de inimigos
+    *
+    * */
 
-        for (int[] p : pos) {
-            demons.add(new Demon(p[0], p[1], cowboy));
-        }
+    public void initEnemies() {
+        demons = new ArrayList<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int x = 0;
+                int y = 100;
+                int wave = 4;
+                int line = 5;
+                //demons
+                //cowboy
+
+                for(int i = 0; i<wave; i++) {
+                    for(int j = 0; j < line; j++) {
+                        demons.add(new Demon(x, y, cowboy));
+                        y += 20;
+                    }
+                    y = 100;
+                    x += 20;
+                }
+            }
+        }).start();
     }
 
     @Override
@@ -86,8 +99,7 @@ public class Field extends JPanel implements ActionListener {
     private void drawObjects(Graphics g) {
 
         if (cowboy.isVisible()) {
-            g.drawImage(cowboy.getImage(), cowboy.getX(), cowboy.getY(),
-                    this);
+            g.drawImage(cowboy.getImage(), cowboy.getX(), cowboy.getY(), this);
         }
 
         ArrayList<Bullet> ms = cowboy.getBullets();
@@ -98,6 +110,7 @@ public class Field extends JPanel implements ActionListener {
             }
         }
 
+        // Thread para gerar e mover inimigos
         for (Demon a : demons) {
             if (a.isVisible()) {
                 g.drawImage(a.getImage(), a.getX(), a.getY(), this);
@@ -105,7 +118,7 @@ public class Field extends JPanel implements ActionListener {
         }
 
         g.setColor(Color.WHITE);
-        g.drawString("Aliens left: " + demons.size(), 5, 15);
+        g.drawString("Bounty: " + cowboy.getBounty(), 5, 15);
     }
 
     private void drawGameOver(Graphics g) {
@@ -116,8 +129,7 @@ public class Field extends JPanel implements ActionListener {
 
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(msg, (B_WIDTH - fm.stringWidth(msg)) / 2,
-                B_HEIGHT / 2);
+        g.drawString(msg, (B_WIDTH - fm.stringWidth(msg)) / 2, B_HEIGHT / 2);
     }
 
     @Override
@@ -125,9 +137,9 @@ public class Field extends JPanel implements ActionListener {
 
         inGame();
 
-        updateCraft();
-        updateMissiles();
-        updateAliens();
+        updateCowboy();
+        updateBullets();
+        updateDemons();
 
         checkCollisions();
 
@@ -141,14 +153,14 @@ public class Field extends JPanel implements ActionListener {
         }
     }
 
-    private void updateCraft() {
+    private void updateCowboy() {
 
         if (cowboy.isVisible()) {
             cowboy.move();
         }
     }
 
-    private void updateMissiles() {
+    private void updateBullets() {
 
         ArrayList<Bullet> ms = cowboy.getBullets();
 
@@ -164,7 +176,7 @@ public class Field extends JPanel implements ActionListener {
         }
     }
 
-    private void updateAliens() {
+    private void updateDemons() {
 
         if (demons.isEmpty()) {
 
@@ -187,6 +199,7 @@ public class Field extends JPanel implements ActionListener {
 
         Rectangle r3 = cowboy.getBounds();
 
+        // Verifica colisão entre cowboy e demon
         for (Demon demon : demons) {
             Rectangle r2 = demon.getBounds();
 
@@ -199,6 +212,7 @@ public class Field extends JPanel implements ActionListener {
 
         ArrayList<Bullet> ms = cowboy.getBullets();
 
+        // Verifica colisão entre bullet e demon
         for (Bullet m : ms) {
 
             Rectangle r1 = m.getBounds();
@@ -210,6 +224,7 @@ public class Field extends JPanel implements ActionListener {
                 if (r1.intersects(r2)) {
                     m.setVisible(false);
                     demon.setVisible(false);
+                    cowboy.addBounty(10);
                 }
             }
         }

@@ -7,6 +7,7 @@ public class Cowboy extends Sprite {
 
     private int dx;
     private int dy;
+    private int bounty;
     private final int speed = 2;
     private ArrayList<Bullet> bullets;
 
@@ -16,7 +17,7 @@ public class Cowboy extends Sprite {
     }
 
     private void initCraft() {
-
+        bounty = 0;
         bullets = new ArrayList<>();
         loadImage("/home/wellington/Desktop/PLC/Projeto/PLC/src/Assets/Game/Cowboy.png");
         getImageDimensions();
@@ -38,6 +39,15 @@ public class Cowboy extends Sprite {
 
     public ArrayList getBullets() {
         return bullets;
+    }
+
+
+    public int getBounty() {
+        return bounty;
+    }
+
+    public void setBounty(int bounty) {
+        this.bounty = bounty;
     }
 
     public void keyPressed(KeyEvent e) {
@@ -100,5 +110,9 @@ public class Cowboy extends Sprite {
         if (key == KeyEvent.VK_S) {
             dy = 0;
         }
+    }
+
+    public void addBounty(int money) {
+        bounty += money;
     }
 }
