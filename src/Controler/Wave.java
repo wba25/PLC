@@ -5,10 +5,10 @@ import Models.Sprite;
 
 // Thread para gerar uma Wave de inimigos
 public class Wave extends Thread {
-    private int x;
-    private int y;
-    private int waves;
-    private int lines;
+    protected int x;
+    protected int y;
+    protected int waves;
+    protected int lines;
 
     public Wave(int x, int y, int waves, int lines) {
         this.x = x;

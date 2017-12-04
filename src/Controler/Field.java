@@ -48,18 +48,16 @@ public class Field extends JPanel implements ActionListener {
         timer.start();
     }
 
-    /*
-    *
-    * TODO:
-    *
-    * Threads para gerar ondas de inimigos
-    *
-    * */
-
     public void initEnemies() {
         demons = new ArrayList<>();
-        Wave w = new Wave(0,60,2,10);
-        w.start();
+        Wave w1 = new Wave(0,100,2,5);
+        Wave w2 = new Wave(385,100,2,5);
+        Wave w3 = new WaveHorizontal(150,0,2,5);
+        Wave w4 = new WaveHorizontal(150,285,2,5);
+        w1.start();
+        w2.start();
+        w3.start();
+        w4.start();
     }
 
     @Override
@@ -67,7 +65,6 @@ public class Field extends JPanel implements ActionListener {
         super.paintComponent(g);
 
         if (ingame) {
-
             drawObjects(g);
 
         } else {
