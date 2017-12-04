@@ -3,12 +3,12 @@ package Controler;
 import Models.Demon;
 
 public class WaveHorizontal extends Wave {
-    public WaveHorizontal(int x, int y, int waves, int lines) {
-        super(x, y, waves, lines);
+    public WaveHorizontal(int x, int y, int waves, int lines, int begin) {
+        super(x, y, waves, lines, begin);
     }
 
     @Override
-    public void run() {
+    public void generateWave() {
         int startY = y;
         int startX = x;
         for(int j = 0; j < waves; j++) {

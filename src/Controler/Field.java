@@ -50,14 +50,7 @@ public class Field extends JPanel implements ActionListener {
 
     public void initEnemies() {
         demons = new ArrayList<>();
-        Wave w1 = new Wave(0,100,2,5);
-        Wave w2 = new Wave(385,100,2,5);
-        Wave w3 = new WaveHorizontal(150,0,2,5);
-        Wave w4 = new WaveHorizontal(150,285,2,5);
-        w1.start();
-        w2.start();
-        w3.start();
-        w4.start();
+        generateDemons();
     }
 
     @Override
@@ -125,6 +118,18 @@ public class Field extends JPanel implements ActionListener {
         repaint();
     }
 
+    private void generateDemons() {
+        Wave w1 = new Wave(50,100,1,1,20);
+        Wave w2 = new Wave(385,100,1,1,0);
+        Wave w3 = new WaveHorizontal(150,0,1,1,20);
+        Wave w4 = new WaveHorizontal(150,285,1,1,0);
+
+        //w1.start();
+        //w2.start();
+        //w3.start();
+        //w4.start();
+    }
+
     private void inGame() {
 
         if (!ingame) {
@@ -159,7 +164,7 @@ public class Field extends JPanel implements ActionListener {
 
         if (demons.isEmpty()) {
 
-            ingame = false;
+            //ingame = false;
             return;
         }
 
