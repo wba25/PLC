@@ -58,26 +58,8 @@ public class Field extends JPanel implements ActionListener {
 
     public void initEnemies() {
         demons = new ArrayList<>();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int x = 0;
-                int y = 100;
-                int wave = 4;
-                int line = 5;
-                //demons
-                //cowboy
-
-                for(int i = 0; i<wave; i++) {
-                    for(int j = 0; j < line; j++) {
-                        demons.add(new Demon(x, y, cowboy));
-                        y += 20;
-                    }
-                    y = 100;
-                    x += 20;
-                }
-            }
-        }).start();
+        Wave w = new Wave(0,60,2,10);
+        w.start();
     }
 
     @Override

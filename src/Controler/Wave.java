@@ -19,17 +19,14 @@ public class Wave extends Thread {
 
     @Override
     public void run() {
-        int x = 0;
-        int y = 100;
-        int wave = 4;
-        int line = 5;
-
-        for(int i = 0; i<wave; i++) {
-            for(int j = 0; j < line; j++) {
+        int startY = y;
+        int startX = x;
+        for(int i = 0; i<waves; i++) {
+            for(int j = 0; j < lines; j++) {
                 Field.demons.add(new Demon(x, y, Field.cowboy));
                 y += 20;
             }
-            y = 100;
+            y = startY;
             x += 20;
         }
     }
