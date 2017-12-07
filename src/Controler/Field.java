@@ -20,7 +20,7 @@ public class Field extends JPanel implements ActionListener {
     public static Cowboy cowboy;
     public static ArrayList<Demon> demons;
     public static ArrayList<Mummy> mummies;
-    public static  ArrayList<Ogre> ogres;
+    public static ArrayList<Ogre> ogres;
     private boolean ingame;
     private final int ICRAFT_X = 180;
     private final int ICRAFT_Y = 120;
@@ -110,7 +110,7 @@ public class Field extends JPanel implements ActionListener {
         }
         */
 
-        for (Mummy mm: mummies) {
+        for (Mummy mm : mummies) {
             if (mm.isVisible()) {
                 g.drawImage(mm.getImage(), mm.getX(), mm.getY(), this);
             }
@@ -122,7 +122,7 @@ public class Field extends JPanel implements ActionListener {
                     g.drawImage(o.getImage(), o.getX(), o.getY(), this);
                 }
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("");
         }
 
@@ -138,12 +138,12 @@ public class Field extends JPanel implements ActionListener {
 
         g.setColor(Color.white);
         g.setFont(big);
-        g.drawString(msg, (B_WIDTH - fm.stringWidth(msg)) / 2, (B_HEIGHT / 2)-50);
+        g.drawString(msg, (B_WIDTH - fm.stringWidth(msg)) / 2, (B_HEIGHT / 2) - 50);
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
         fm = getFontMetrics(small);
         g.setFont(small);
-        String bounty = "Your bounty: "+cowboy.getBounty();
+        String bounty = "Your bounty: " + cowboy.getBounty();
         g.drawString(bounty, (B_WIDTH - fm.stringWidth(bounty)) / 2, B_HEIGHT / 2);
     }
 
@@ -166,20 +166,20 @@ public class Field extends JPanel implements ActionListener {
     public void generateDemons() {
         new Wave(0, 120, 1, 2);
         new Wave(385, 120, 1, 0);
-        new WaveHorizontal(180,0,1,2);
-        new WaveHorizontal(180,285,1,0);
+        new WaveHorizontal(180, 0, 1, 2);
+        new WaveHorizontal(180, 285, 1, 0);
     }
 
     public void generateMummies() {
         new WaveMummy(0, 0, 1, 1);
-        new WaveMummy(B_WIDTH-20, B_HEIGHT-20, 1, 2);
-        new WaveMummy(B_WIDTH-20, 0, 1, 3);
-        new WaveMummy(0, B_HEIGHT-20, 1, 4);
+        new WaveMummy(B_WIDTH - 20, B_HEIGHT - 20, 1, 2);
+        new WaveMummy(B_WIDTH - 20, 0, 1, 3);
+        new WaveMummy(0, B_HEIGHT - 20, 1, 4);
     }
 
     public void generateOgres() {
         new WaveOgres(0, 120, 1, 2);
-        new WaveOgres(180,285,1,0);
+        new WaveOgres(180, 285, 1, 0);
     }
 
     public void inGame() {
@@ -216,7 +216,7 @@ public class Field extends JPanel implements ActionListener {
 
     public void updateDemons() {
         // Para não consumir de coleção vazia
-        if(demons.isEmpty()) return;
+        if (demons.isEmpty()) return;
 
         Iterator<Demon> interdemons = demons.iterator();
         while (interdemons.hasNext()) {
@@ -231,7 +231,7 @@ public class Field extends JPanel implements ActionListener {
     }
 
     public void updateMummies() {
-        if(mummies.isEmpty()) return;
+        if (mummies.isEmpty()) return;
 
         Iterator<Mummy> interMummies = mummies.iterator();
         while (interMummies.hasNext()) {
@@ -246,7 +246,7 @@ public class Field extends JPanel implements ActionListener {
     }
 
     public void updateOgres() {
-        if(ogres.isEmpty()) return;
+        if (ogres.isEmpty()) return;
 
         Iterator<Ogre> interOgres = ogres.iterator();
         while (interOgres.hasNext()) {
@@ -289,8 +289,9 @@ public class Field extends JPanel implements ActionListener {
             }
         }
 
-        for (Ogre o : ogres) {
-            try {
+        try {
+            for (Ogre o : ogres) {
+
                 Rectangle r2 = o.getBounds();
 
                 if (r3.intersects(r2)) {
@@ -298,10 +299,11 @@ public class Field extends JPanel implements ActionListener {
                     o.setVisible(false);
                     ingame = false;
                 }
-            } catch (NullPointerException e) {
-                System.out.println("O Ogre ainda não morreu");
             }
+        } catch (NullPointerException e) {
+            System.out.println("O Ogre ainda não morreu");
         }
+
 
         ArrayList<Bullet> bullets = cowboy.getBullets();
 
@@ -330,8 +332,8 @@ public class Field extends JPanel implements ActionListener {
                 }
             }
 
-            for (Ogre o : ogres) {
-                try {
+            try {
+                for (Ogre o : ogres) {
                     Rectangle r2 = o.getBounds();
 
                     if (r1.intersects(r2)) {
@@ -342,10 +344,11 @@ public class Field extends JPanel implements ActionListener {
                             cowboy.addBounty(50);
                         }
                     }
-                } catch (NullPointerException e) {
-                    System.out.println("O Ogre ainda não morreu");
                 }
+            } catch (NullPointerException e) {
+                System.out.println("O Ogre ainda não morreu");
             }
+
         }
     }
 
