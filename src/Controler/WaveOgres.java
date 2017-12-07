@@ -61,7 +61,7 @@ public class WaveOgres extends Wave{
     }
 
     synchronized public void addEnemy(Ogre o) {
-        if (Field.ogres.size() == limit) {
+        if (Field.ogres.size() == this.limit) {
             try {
                 wait();
             } catch (InterruptedException e) {

@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Field extends JPanel implements ActionListener {
 
@@ -92,11 +93,22 @@ public class Field extends JPanel implements ActionListener {
             }
         }
 
+        Iterator<Demon> interDemons = demons.iterator();
+
+        while (interDemons.hasNext()) {
+            Demon d = interDemons.next();
+
+            if (d.isVisible())
+                g.drawImage(d.getImage(), d.getX(), d.getY(), this);
+        }
+
+        /*
         for (Demon a : demons) {
             if (a.isVisible()) {
                 g.drawImage(a.getImage(), a.getX(), a.getY(), this);
             }
         }
+        */
 
         for (Mummy mm: mummies) {
             if (mm.isVisible()) {
@@ -228,7 +240,7 @@ public class Field extends JPanel implements ActionListener {
     public void updateOgres() {
         if(ogres.isEmpty()) return;
 
-        System.out.println(ogres.size());
+        //System.out.println(ogres);
 
         for (int i = 0; i < ogres.size();i++) {
             Ogre o = ogres.get(i);
