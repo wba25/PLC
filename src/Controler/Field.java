@@ -214,12 +214,14 @@ public class Field extends JPanel implements ActionListener {
         // Para não consumir de coleção vazia
         if(demons.isEmpty()) return;
 
-        for (int i = 0; i < demons.size();i++) {
-            Demon demon = demons.get(i);
-            if (demon.isVisible()) {
-                demon.move();
+        Iterator<Demon> interdemons = demons.iterator();
+        while (interdemons.hasNext()) {
+            Demon d = interdemons.next();
+
+            if (d.isVisible()) {
+                d.move();
             } else {
-                demons.remove(i);
+                interdemons.remove();
             }
         }
     }
@@ -227,12 +229,14 @@ public class Field extends JPanel implements ActionListener {
     public void updateMummies() {
         if(mummies.isEmpty()) return;
 
-        for (int i = 0; i < mummies.size();i++) {
-            Mummy m = mummies.get(i);
+        Iterator<Mummy> interMummies = mummies.iterator();
+        while (interMummies.hasNext()) {
+            Mummy m = interMummies.next();
+
             if (m.isVisible()) {
                 m.move();
             } else {
-                mummies.remove(i);
+                interMummies.remove();
             }
         }
     }
@@ -240,14 +244,17 @@ public class Field extends JPanel implements ActionListener {
     public void updateOgres() {
         if(ogres.isEmpty()) return;
 
-        //System.out.println(ogres);
-
-        for (int i = 0; i < ogres.size();i++) {
-            Ogre o = ogres.get(i);
-            if (o.isVisible()) {
-                o.move();
-            } else {
-                ogres.remove(i);
+        Iterator<Ogre> interOgres = ogres.iterator();
+        while (interOgres.hasNext()) {
+            Ogre o = interOgres.next();
+            try {
+                if (o.isVisible()) {
+                    o.move();
+                } else {
+                    interOgres.remove();
+                }
+            } catch (NullPointerException e) {
+                System.out.println("O Ogre ainda não morreu");
             }
         }
     }
@@ -279,12 +286,16 @@ public class Field extends JPanel implements ActionListener {
         }
 
         for (Ogre o : ogres) {
-            Rectangle r2 = o.getBounds();
+            try {
+                Rectangle r2 = o.getBounds();
 
-            if (r3.intersects(r2)) {
-                cowboy.setVisible(false);
-                o.setVisible(false);
-                ingame = false;
+                if (r3.intersects(r2)) {
+                    cowboy.setVisible(false);
+                    o.setVisible(false);
+                    ingame = false;
+                }
+            } catch (NullPointerException e) {
+                System.out.println("O Ogre ainda não morreu");
             }
         }
 

@@ -7,7 +7,7 @@ import java.util.TimerTask;
 
 public class WaveMummy extends Wave {
     public WaveMummy(int x, int y, int lines, int begin) {
-        this.interval = 10000;
+        this.interval = 8000;
         this.delay = 5000;
         this.waveNumber = 0;
         this.timer = new Timer();
