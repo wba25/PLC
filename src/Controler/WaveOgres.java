@@ -1,21 +1,21 @@
 package Controler;
 
-import Models.Mummy;
+import Models.Ogre;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class WaveMummy extends Wave {
-    public WaveMummy(int x, int y, int lines, int begin) {
-        this.interval = 10000;
-        this.delay = 5000;
+public class WaveOgres extends Wave{
+    public WaveOgres(int x, int y, int lines, int begin) {
+        this.interval = 15070;
+        this.delay = 10000;
         this.waveNumber = 0;
         this.timer = new Timer();
         this.x = x;
         this.y = y;
         this.lines = lines;
         this.begin = begin;
-        this.limit = 10;
+        this.limit = 5;
 
         verifyLimit();
 
@@ -26,13 +26,7 @@ public class WaveMummy extends Wave {
     public void timerWaves() {
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                if (waveNumber >= begin) {
-                    if (waveNumber % 10 == 0) {
-                        updateLines(1);
-                    }
-                    generateWave();
-                }
-                waveNumber++;
+                generateWave();
             }
         }, delay, interval);
     }
@@ -41,7 +35,7 @@ public class WaveMummy extends Wave {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (Field.mummies.size() < limit) {
+                if (Field.ogres.size() < limit) {
                     try {
                         notifyAll();
                     } catch (IllegalMonitorStateException e) {
@@ -58,7 +52,7 @@ public class WaveMummy extends Wave {
         int tempX = x;
         for (int i = 0; i < waves; i++) {
             for (int j = 0; j < lines; j++) {
-                addEnemy((new Mummy(tempX, tempY, Field.cowboy)));
+                addEnemy((new Ogre(tempX, tempY, Field.cowboy)));
                 tempY += 20;
             }
             tempY = y;
@@ -66,14 +60,14 @@ public class WaveMummy extends Wave {
         }
     }
 
-    synchronized public void addEnemy(Mummy m) {
-        if (Field.mummies.size() == limit) {
+    synchronized public void addEnemy(Ogre o) {
+        if (Field.ogres.size() == limit) {
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        Field.mummies.add(m);
+        Field.ogres.add(o);
     }
 }

@@ -10,16 +10,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 public class Field extends JPanel implements ActionListener {
 
     private Timer timer;
+
+
     public static Cowboy cowboy;
     public static ArrayList<Demon> demons;
     public static ArrayList<Mummy> mummies;
-    public static final int demons_limit = 50;
+    public static  ArrayList<Ogre> ogres;
     private boolean ingame;
     private final int ICRAFT_X = 180;
     private final int ICRAFT_Y = 120;
@@ -32,7 +32,7 @@ public class Field extends JPanel implements ActionListener {
         initField();
     }
 
-    private void initField() {
+    public void initField() {
         addKeyListener(new TAdapter());
         setFocusable(true);
         //setBackground(new Color(147,177,38));
@@ -53,8 +53,10 @@ public class Field extends JPanel implements ActionListener {
     public void initEnemies() {
         demons = new ArrayList<>();
         mummies = new ArrayList<>();
+        ogres = new ArrayList<>();
         generateDemons();
         generateMummies();
+        generateOgres();
     }
 
     @Override
@@ -76,7 +78,7 @@ public class Field extends JPanel implements ActionListener {
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private void drawObjects(Graphics g) {
+    public void drawObjects(Graphics g) {
 
         if (cowboy.isVisible()) {
             g.drawImage(cowboy.getImage(), cowboy.getX(), cowboy.getY(), this);
@@ -102,11 +104,17 @@ public class Field extends JPanel implements ActionListener {
             }
         }
 
+        for (Ogre o: ogres) {
+            if (o.isVisible()) {
+                g.drawImage(o.getImage(), o.getX(), o.getY(), this);
+            }
+        }
+
         g.setColor(Color.WHITE);
         g.drawString("Bounty: " + cowboy.getBounty(), 5, 15);
     }
 
-    private void drawGameOver(Graphics g) {
+    public void drawGameOver(Graphics g) {
 
         String msg = "Game Over";
         Font big = new Font("Helvetica", Font.BOLD, 24);
@@ -132,44 +140,49 @@ public class Field extends JPanel implements ActionListener {
         updateBullets();
         updateDemons();
         updateMummies();
+        updateOgres();
 
         checkCollisions();
 
         repaint();
     }
 
-    private void generateDemons() {
+    public void generateDemons() {
         new Wave(0, 120, 1, 2);
         new Wave(385, 120, 1, 0);
         new WaveHorizontal(180,0,1,2);
         new WaveHorizontal(180,285,1,0);
     }
 
-    private void generateMummies() {
+    public void generateMummies() {
         new WaveMummy(0, 0, 1, 1);
         new WaveMummy(B_WIDTH-20, B_HEIGHT-20, 1, 2);
         new WaveMummy(B_WIDTH-20, 0, 1, 3);
         new WaveMummy(0, B_HEIGHT-20, 1, 4);
     }
 
-    private void inGame() {
+    public void generateOgres() {
+        new WaveOgres(0, 120, 1, 2);
+        new WaveOgres(180,285,1,0);
+    }
+
+    public void inGame() {
         if (!ingame) {
             endGame();
             timer.stop();
         }
     }
 
-    private void endGame() {
+    public void endGame() {
     }
 
-    private void updateCowboy() {
-
+    public void updateCowboy() {
         if (cowboy.isVisible()) {
             cowboy.move();
         }
     }
 
-    private void updateBullets() {
+    public void updateBullets() {
 
         ArrayList<Bullet> ms = cowboy.getBullets();
 
@@ -185,9 +198,7 @@ public class Field extends JPanel implements ActionListener {
         }
     }
 
-    private void updateDemons() {
-        //System.out.println(demons.size());
-
+    public void updateDemons() {
         // Para não consumir de coleção vazia
         if(demons.isEmpty()) return;
 
@@ -201,10 +212,7 @@ public class Field extends JPanel implements ActionListener {
         }
     }
 
-    private void updateMummies() {
-        //System.out.println(demons.size());
-
-        // Para não consumir de coleção vazia
+    public void updateMummies() {
         if(mummies.isEmpty()) return;
 
         for (int i = 0; i < mummies.size();i++) {
@@ -213,6 +221,21 @@ public class Field extends JPanel implements ActionListener {
                 m.move();
             } else {
                 mummies.remove(i);
+            }
+        }
+    }
+
+    public void updateOgres() {
+        if(ogres.isEmpty()) return;
+
+        System.out.println(ogres.size());
+
+        for (int i = 0; i < ogres.size();i++) {
+            Ogre o = ogres.get(i);
+            if (o.isVisible()) {
+                o.move();
+            } else {
+                ogres.remove(i);
             }
         }
     }
@@ -243,18 +266,28 @@ public class Field extends JPanel implements ActionListener {
             }
         }
 
-        ArrayList<Bullet> ms = cowboy.getBullets();
+        for (Ogre o : ogres) {
+            Rectangle r2 = o.getBounds();
+
+            if (r3.intersects(r2)) {
+                cowboy.setVisible(false);
+                o.setVisible(false);
+                ingame = false;
+            }
+        }
+
+        ArrayList<Bullet> bullets = cowboy.getBullets();
 
         // Verifica colisão entre bullet e demon
-        for (Bullet m : ms) {
+        for (Bullet b : bullets) {
 
-            Rectangle r1 = m.getBounds();
+            Rectangle r1 = b.getBounds();
 
             for (Demon demon : demons) {
                 Rectangle r2 = demon.getBounds();
 
                 if (r1.intersects(r2)) {
-                    m.setVisible(false);
+                    b.setVisible(false);
                     demon.setVisible(false);
                     cowboy.addBounty(10);
                 }
@@ -264,9 +297,22 @@ public class Field extends JPanel implements ActionListener {
                 Rectangle r2 = mm.getBounds();
 
                 if (r1.intersects(r2)) {
-                    m.setVisible(false);
+                    b.setVisible(false);
                     mm.setVisible(false);
                     cowboy.addBounty(30);
+                }
+            }
+
+            for (Ogre o : ogres) {
+                Rectangle r2 = o.getBounds();
+
+                if (r1.intersects(r2)) {
+                    b.setVisible(false);
+                    o.decrementLive();
+                    if(o.getLive()<=0){
+                        o.setVisible(false);
+                        cowboy.addBounty(50);
+                    }
                 }
             }
         }
