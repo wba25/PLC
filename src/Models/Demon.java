@@ -17,7 +17,7 @@ public class Demon extends Sprite {
     }
 
     public void initDemon() {
-        loadImage("/home/wellington/Desktop/PLC/Projeto/PLC/src/Assets/Game/Demon.png");
+        loadImage("../Assets/Game/Demon.png");
         getImageDimensions();
     }
 

@@ -20,7 +20,7 @@ public class Cowboy extends Sprite {
     private void initCraft() {
         bounty = 0;
         bullets = new ArrayList<>();
-        loadImage("/home/wellington/Desktop/PLC/Projeto/PLC/src/Assets/Game/Cowboy.png");
+        loadImage("../Assets/Game/Cowboy.png");
         getImageDimensions();
     }
 

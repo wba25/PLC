@@ -65,7 +65,7 @@ public class Field extends JPanel implements ActionListener {
         super.paintComponent(g);
 
         // Set background image
-        Image background = Toolkit.getDefaultToolkit().getImage("/home/wellington/Desktop/PLC/Projeto/PLC/src/Assets/Game/Background.png");
+        Image background = Toolkit.getDefaultToolkit().getImage("../Assets/Game/Background.png");
         g.drawImage(background, 0, 0, this);
 
         if (ingame) {

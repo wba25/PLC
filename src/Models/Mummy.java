@@ -11,7 +11,7 @@ public class Mummy extends Sprite {
     }
 
     private void initMummy() {
-        loadImage("/home/wellington/Desktop/PLC/Projeto/PLC/src/Assets/Game/Mummy.png");
+        loadImage("../Assets/Game/Mummy.png");
         getImageDimensions();
     }
 

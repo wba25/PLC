@@ -10,7 +10,7 @@ public class Ogre extends Demon{
 
     @Override
     public void initDemon() {
-        loadImage("/home/wellington/Desktop/PLC/Projeto/PLC/src/Assets/Game/Ogre.png");
+        loadImage("../Assets/Game/Ogre.png");
         getImageDimensions();
     }
 

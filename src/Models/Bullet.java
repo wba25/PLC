@@ -18,7 +18,7 @@ public class Bullet extends Sprite {
 
     private void initBullet() {
 
-        loadImage("/home/wellington/Desktop/PLC/Projeto/PLC/src/Assets/Game/Bullet.png");
+        loadImage("../Assets/Game/Bullet.png");
         getImageDimensions();
     }
 
