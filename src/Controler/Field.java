@@ -116,10 +116,14 @@ public class Field extends JPanel implements ActionListener {
             }
         }
 
-        for (Ogre o: ogres) {
-            if (o.isVisible()) {
-                g.drawImage(o.getImage(), o.getX(), o.getY(), this);
+        try {
+            for (Ogre o : ogres) {
+                if (o.isVisible()) {
+                    g.drawImage(o.getImage(), o.getX(), o.getY(), this);
+                }
             }
+        } catch (NullPointerException e){
+            System.out.println("");
         }
 
         g.setColor(Color.WHITE);
@@ -327,15 +331,19 @@ public class Field extends JPanel implements ActionListener {
             }
 
             for (Ogre o : ogres) {
-                Rectangle r2 = o.getBounds();
+                try {
+                    Rectangle r2 = o.getBounds();
 
-                if (r1.intersects(r2)) {
-                    b.setVisible(false);
-                    o.decrementLive();
-                    if(o.getLive()<=0){
-                        o.setVisible(false);
-                        cowboy.addBounty(50);
+                    if (r1.intersects(r2)) {
+                        b.setVisible(false);
+                        o.decrementLive();
+                        if (o.getLive() <= 0) {
+                            o.setVisible(false);
+                            cowboy.addBounty(50);
+                        }
                     }
+                } catch (NullPointerException e) {
+                    System.out.println("O Ogre ainda não morreu");
                 }
             }
         }
