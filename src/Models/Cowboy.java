@@ -7,6 +7,7 @@ public class Cowboy extends Sprite {
 
     private int dx;
     private int dy;
+    private boolean isShooting;
     private int bounty;
     private final int speed = 2;
     private ArrayList<Bullet> bullets;
@@ -54,20 +55,24 @@ public class Cowboy extends Sprite {
 
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_LEFT) {
+        if (key == KeyEvent.VK_LEFT && !isShooting) {
             fire(0, -1);
+            isShooting = true;
         }
 
-        if (key == KeyEvent.VK_RIGHT) {
+        if ((key == KeyEvent.VK_RIGHT) && !isShooting) {
             fire(0, 1);
+            isShooting = true;
         }
 
-        if (key == KeyEvent.VK_UP) {
+        if ((key == KeyEvent.VK_UP) && !isShooting) {
             fire(-1, 0);
+            isShooting = true;
         }
 
-        if (key == KeyEvent.VK_DOWN) {
+        if ((key == KeyEvent.VK_DOWN) && !isShooting) {
             fire(1, 0);
+            isShooting = true;
         }
 
         if (key == KeyEvent.VK_A) {
@@ -109,6 +114,22 @@ public class Cowboy extends Sprite {
 
         if (key == KeyEvent.VK_S) {
             dy = 0;
+        }
+
+        if (key == KeyEvent.VK_LEFT) {
+            isShooting = false;
+        }
+
+        if (key == KeyEvent.VK_RIGHT) {
+            isShooting = false;
+        }
+
+        if (key == KeyEvent.VK_UP) {
+            isShooting = false;
+        }
+
+        if (key == KeyEvent.VK_DOWN) {
+            isShooting = false;
         }
     }
 

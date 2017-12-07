@@ -1,26 +1,16 @@
 package Controler;
 
-import Models.Demon;
+import Models.Mummy;
 
-import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Wave {
-    protected int x;
-    protected int y;
-    protected final int waves = 1;
-    protected int lines;
-    protected Timer timer;
-    protected int interval;
-    protected int delay;
-    protected int waveNumber;
-    protected int begin;
-    protected int limit = 50;
-
-    public Wave(int x, int y, int lines, int begin) {
-        this.interval = 5000;
+/**
+ * Created by wellington on 07/12/17.
+ */
+public class WaveMummy extends Wave {
+    public WaveMummy(int x, int y, int lines, int begin) {
+        this.interval = 10000;
         this.delay = 5000;
         this.waveNumber = 0;
         this.timer = new Timer();
@@ -28,23 +18,20 @@ public class Wave {
         this.y = y;
         this.lines = lines;
         this.begin = begin;
-
-        generateWave();
+        this.limit = 10;
 
         verifyLimit();
 
         timerWaves();
     }
 
-    public Wave() {
-    }
-
+    @Override
     public void timerWaves() {
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 if (waveNumber >= begin) {
-                    if (waveNumber % 5 == 0) {
-                        updateLines(2);
+                    if (waveNumber % 10 == 0) {
+                        updateLines(1);
                     }
                     generateWave();
                 }
@@ -57,7 +44,7 @@ public class Wave {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (Field.demons.size() < limit) {
+                if (Field.mummies.size() < limit) {
                     try {
                         notifyAll();
                     } catch (IllegalMonitorStateException e) {
@@ -68,12 +55,13 @@ public class Wave {
         }).start();
     }
 
+    @Override
     public void generateWave() {
         int tempY = y;
         int tempX = x;
         for (int i = 0; i < waves; i++) {
             for (int j = 0; j < lines; j++) {
-                addEnemy((new Demon(tempX, tempY, Field.cowboy)));
+                addEnemy((new Mummy(tempX, tempY, Field.cowboy)));
                 tempY += 20;
             }
             tempY = y;
@@ -81,19 +69,14 @@ public class Wave {
         }
     }
 
-    synchronized public void addEnemy(Demon d) {
-        if (Field.demons.size() == limit) {
+    synchronized public void addEnemy(Mummy m) {
+        if (Field.mummies.size() == limit) {
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        Field.demons.add(d);
+        Field.mummies.add(m);
     }
-
-    public void updateLines(int linePlus) {
-        lines += linePlus;
-    }
-
 }

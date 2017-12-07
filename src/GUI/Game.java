@@ -14,12 +14,17 @@ public class Game extends JFrame {
 
     private void initUI() {
 
-        add(new Field());
+        Field f = new Field();
 
-        setResizable(false);
+        setPreferredSize(new Dimension(410,330));
+
+        add(f);
+
+        //setResizable(false);
+
         pack();
 
-        setTitle("Shoot me bitch");
+        setTitle("PLC - Top Down Shooter");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -30,6 +35,7 @@ public class Game extends JFrame {
             @Override
             public void run() {
                 Game ex = new Game();
+                //ex.getContentPane().setSize(1200, 1200);
                 ex.setVisible(true);
             }
         });

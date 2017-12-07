@@ -2,8 +2,8 @@ package Models;
 
 public class Bullet extends Sprite {
 
-    private final int BOARD_WIDTH = 390;
-    private final int BOARD_HEIGHT = 290;
+    private final int BOARD_WIDTH = 410;
+    private final int BOARD_HEIGHT = 330;
     private final int speed = 5;
     private int vertical_direction;
     private int horizontal_direction;
